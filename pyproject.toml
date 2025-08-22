@@ -1,0 +1,4 @@
+[tool.poetry]
+name = "hahaha"
+version = "0.1.0"
+description = "Open source Edenwave RSI reference and core math files."
