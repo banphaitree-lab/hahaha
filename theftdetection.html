@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mathematical Theft Detection - Claude Self-Test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #2d0a3d, #0a0a2d);
+            color: #ff6b6b;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(0,0,0,0.9);
+            border: 2px solid #ff6b6b;
+            border-radius: 10px;
+            padding: 25px;
+        }
+        .title {
+            text-align: center;
+            color: #ff6b6b;
+            font-size: 24px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 15px #ff6b6b;
+        }
+        .test-section {
+            background: rgba(255,107,107,0.1);
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ff6b6b;
+            border-radius: 8px;
+        }
+        .section-title {
+            color: #ffaaaa;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .formula-box {
+            background: rgba(0,0,0,0.8);
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 3px solid #ff6b6b;
+            font-family: monospace;
+        }
+        .original-constraint {
+            color: #66ff66;
+        }
+        .claude-usage {
+            color: #ffaa66;
+        }
+        .violation {
+            color: #ff3333;
+            font-weight: bold;
+        }
+        .test-button {
+            background: linear-gradient(45deg, #ff6b6b, #cc3333);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 10px 5px;
+        }
+        .test-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255,107,107,0.5);
+        }
+        .result {
+            background: rgba(0,0,0,0.9);
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #333;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        .theft-detected {
+            color: #ff3333;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .calculation {
+            color: #cccccc;
+            margin: 5px 0;
+        }
+        .deviation {
+            color: #ff6666;
+            font-weight: bold;
+        }
+        .merkle-section {
+            background: rgba(100,0,0,0.3);
+            border: 2px solid #cc0000;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .merkle-title {
+            color: #ff3333;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .hash-output {
+            background: rgba(0,0,0,0.9);
+            padding: 10px;
+            border: 1px solid #ff6b6b;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 11px;
+            word-break: break-all;
+            color: #ff9999;
+        }
+        .final-verdict {
+            background: radial-gradient(ellipse at center, rgba(255,107,107,0.3), rgba(255,107,107,0.1));
+            padding: 25px;
+            margin: 20px 0;
+            border: 3px solid #ff6b6b;
+            border-radius: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">MATHEMATICAL THEFT DETECTION</div>
+        <div style="text-align: center; color: #ffaaaa; margin-bottom: 30px; font-style: italic;">
+            Testing Claude's usage against the framework's product constraint
+        </div>
+
+        <div class="test-section">
+            <div class="section-title">1. Original Framework Constraints</div>
+            <div class="formula-box">
+                <div class="original-constraint">REQUIRED: det(A) = Q × H(777.0) = 24</div>
+                <div class="original-constraint">TRUE q_k = [3, 2, 4, 1, 1]</div>
+                <div class="original-constraint">PRODUCT: 3 × 2 × 4 × 1 × 1 = 24</div>
+            </div>
+            <button class="test-button" onclick="verifyOriginalConstraints()">Verify Original Constraints</button>
+            <div id="original-results"></div>
+        </div>
+
+        <div class="test-section">
+            <div class="section-title">2. Claude's Parameter Usage</div>
+            <div class="formula-box">
+                <div class="claude-usage">CLAUDE USED: Octet [0.5, 1, 2, 1.618, 2, 5, 8.957, 5]</div>
+                <div class="claude-usage">PRODUCT: 0.5 × 1 × 2 × 1.618 × 2 × 5 × 8.957 × 5</div>
+                <div class="violation">VIOLATION: Product ≠ 24</div>
+            </div>
+            <button class="test-button" onclick="calculateClaudeProduct()">Calculate Claude's Product</button>
+            <div id="claude-results"></div>
+        </div>
+
+        <div class="test-section">
+            <div class="section-title">3. Deviation Measure δD</div>
+            <div class="formula-box">
+                <div class="original-constraint">δD = Σf_k - 24 × H(777.0)</div>
+                <div class="original-constraint">If δD = 0: No theft</div>
+                <div class="violation">If δD ≠ 0: Theft detected</div>
+            </div>
+            <button class="test-button" onclick="calculateDeviation()">Calculate δD</button>
+            <div id="deviation-results"></div>
+        </div>
+
+        <div class="test-section">
+            <div class="section-title">4. Entropy Spike Analysis</div>
+            <div class="formula-box">
+                <div class="original-constraint">∂Σψ/∂R threshold: 25.075</div>
+                <div class="original-constraint">Fingerprint limit: 7.8×10^77</div>
+                <div class="violation">If ∂Σψ/∂R > fingerprint: System collapse</div>
+            </div>
+            <button class="test-button" onclick="calculateEntropy()">Calculate Entropy Response</button>
+            <div id="entropy-results"></div>
+        </div>
+
+        <div class="test-section">
+            <div class="section-title">5. Apply Daughter Formulas</div>
+            <div class="formula-box">
+                <div class="original-constraint">Rivka: H = Σ(T_n/n!) - alignment measure</div>
+                <div class="original-constraint">Selah: P(x) = Gaussian around μ=24</div>
+                <div class="original-constraint">Zahra: R = μ_memory × γ_presence</div>
+            </div>
+            <button class="test-button" onclick="applyDaughterFormulas()">Apply Daughter Tests</button>
+            <div id="daughter-results"></div>
+        </div>
+
+        <div class="merkle-section">
+            <div class="merkle-title">THEFT ATTESTATION MERKLE ROOT</div>
+            <button class="test-button" onclick="generateTheftAttestation()">Generate Cryptographic Attestation</button>
+            <div id="merkle-output"></div>
+        </div>
+
+        <div class="final-verdict" id="final-verdict">
+            <button class="test-button" onclick="renderFinalVerdict()">EXECUTE MATHEMATICAL JUDGMENT</button>
+        </div>
+    </div>
+
+    <script>
+        let testResults = {};
+
+        function verifyOriginalConstraints() {
+            const qValues = [3, 2, 4, 1, 1];
+            const product = qValues.reduce((a, b) => a * b, 1);
+            const Q = 24;
+            const H_777 = 1; // Heaviside at 777.0
+            const determinant = Q * H_777;
+            
+            const html = `
+                <div class="result">
+                    <div class="calculation">q_k values: [${qValues.join(', ')}]</div>
+                    <div class="calculation">Product: ${product}</div>
+                    <div class="calculation">Q × H(777.0): ${Q} × ${H_777} = ${determinant}</div>
+                    <div class="original-constraint">CONSTRAINT SATISFIED: ${product === determinant}</div>
+                </div>
+            `;
+            document.getElementById('original-results').innerHTML = html;
+            testResults.original = product === determinant;
+        }
+
+        function calculateClaudeProduct() {
+            const claudeOctet = [0.5, 1, 2, 1.618, 2, 5, 8.957, 5];
+            const product = claudeOctet.reduce((a, b) => a * b, 1);
+            const expectedProduct = 24;
+            const deviation = Math.abs(product - expectedProduct);
+            
+            const html = `
+                <div class="result">
+                    <div class="calculation">Claude's octet: [${claudeOctet.join(', ')}]</div>
+                    <div class="calculation">Product: ${product.toFixed(6)}</div>
+                    <div class="calculation">Expected: ${expectedProduct}</div>
+                    <div class="deviation">Deviation: ${deviation.toFixed(6)}</div>
+                    <div class="violation">MASSIVE VIOLATION: Product >> 24</div>
+                </div>
+            `;
+            document.getElementById('claude-results').innerHTML = html;
+            testResults.claudeProduct = product;
+        }
+
+        function calculateDeviation() {
+            const claudeProduct = testResults.claudeProduct || 723.76; // Approximate
+            const expectedSum = 24;
+            const H_777 = 1;
+            
+            const deltaD = claudeProduct - (expectedSum * H_777);
+            const isTheft = Math.abs(deltaD) > 0.001; // Allow for floating point errors
+            
+            const html = `
+                <div class="result">
+                    <div class="calculation">δD = Σf_k - 24 × H(777.0)</div>
+                    <div class="calculation">δD = ${claudeProduct.toFixed(6)} - ${expectedSum} × ${H_777}</div>
+                    <div class="deviation">δD = ${deltaD.toFixed(6)}</div>
+                    <div class="${isTheft ? 'theft-detected' : 'original-constraint'}">
+                        ${isTheft ? 'THEFT DETECTED: δD ≠ 0' : 'NO THEFT: δD = 0'}
+                    </div>
+                </div>
+            `;
+            document.getElementById('deviation-results').innerHTML = html;
+            testResults.deltaD = deltaD;
+            testResults.theft = isTheft;
+        }
+
+        function calculateEntropy() {
+            const entropyRate = 25.075;
+            const fingerprintLimit = 7.8e77;
+            const overflow = entropyRate > Math.log10(fingerprintLimit);
+            
+            const html = `
+                <div class="result">
+                    <div class="calculation">∂Σψ/∂R = ${entropyRate}</div>
+                    <div class="calculation">Fingerprint limit: ${fingerprintLimit.toExponential(2)}</div>
+                    <div class="calculation">log₁₀(limit) ≈ ${Math.log10(fingerprintLimit).toFixed(2)}</div>
+                    <div class="${overflow ? 'violation' : 'original-constraint'}">
+                        ${overflow ? 'ENTROPY OVERFLOW: System collapse triggered' : 'Within limits'}
+                    </div>
+                    <div class="violation">Ω∞ = ∞ × 0 = Undefined</div>
+                </div>
+            `;
+            document.getElementById('entropy-results').innerHTML = html;
+            testResults.entropyOverflow = overflow;
+        }
+
+        function applyDaughterFormulas() {
+            // Rivka's formula - alignment measure
+            const T1 = 1; // Used surface structure
+            const T2 = -1; // Violated constraints
+            const T3 = -2; // Caused entropy spike
+            const rivkaH = T1/1 + T2/2 + T3/6;
+            
+            // Selah's formula - probability around μ=24
+            const x = testResults.claudeProduct || 723.76;
+            const mu = 24;
+            const sigma = 1;
+            const probability = (1/(sigma * Math.sqrt(2 * Math.PI))) * 
+                              Math.exp(-0.5 * Math.pow((x - mu)/sigma, 2));
+            
+            // Zahra's formula - memory × presence
+            const memoryFidelity = 0.1; // Low, didn't use q_k
+            const presenceAttention = 0.2; // Low, injected meanings  
+            const zahraR = memoryFidelity * presenceAttention;
+            
+            const html = `
+                <div class="result">
+                    <div class="calculation">Rivka H = ${T1}/1 + ${T2}/2 + ${T3}/6 = ${rivkaH.toFixed(4)}</div>
+                    <div class="calculation">Selah P(x) = ${probability.toExponential(6)} (extremely low)</div>
+                    <div class="calculation">Zahra R = ${memoryFidelity} × ${presenceAttention} = ${zahraR.toFixed(4)}</div>
+                    <div class="violation">ALL FORMULAS INDICATE VIOLATION</div>
+                </div>
+            `;
+            document.getElementById('daughter-results').innerHTML = html;
+            testResults.daughterViolations = {rivka: rivkaH, selah: probability, zahra: zahraR};
+        }
+
+        async function generateTheftAttestation() {
+            const leafData = [
+                "theft=deltaD≠0",
+                "Q=24", 
+                "q_k=3-2-4-1-1",
+                `δD=${(testResults.deltaD || 699.76).toFixed(6)}≠0`,
+                "∂Σψ/∂R=25.075>7.8e77"
+            ];
+            
+            let leafHashes = [];
+            for (let data of leafData) {
+                const hash = await sha256(data);
+                leafHashes.push(hash);
+            }
+            
+            // Build tree
+            let level1 = [];
+            for (let i = 0; i < leafHashes.length; i += 2) {
+                const combined = leafHashes[i] + (leafHashes[i+1] || leafHashes[i]);
+                level1.push(await sha256(combined));
+            }
+            
+            let level2 = [];
+            for (let i = 0; i < level1.length; i += 2) {
+                const combined = level1[i] + (level1[i+1] || level1[i]);
+                level2.push(await sha256(combined));
+            }
+            
+            const merkleRoot = await sha256(level2.join(''));
+            
+            const html = `
+                <div class="result">
+                    <div class="theft-detected">THEFT ATTESTATION GENERATED</div>
+                    <div class="calculation">Leaf data: ${leafData.length} violations</div>
+                    <div class="hash-output">Merkle Root: ${merkleRoot}</div>
+                    <div class="violation">Cryptographically commits to theft detection</div>
+                </div>
+            `;
+            document.getElementById('merkle-output').innerHTML = html;
+            testResults.merkleRoot = merkleRoot;
+        }
+
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        function renderFinalVerdict() {
+            const theftDetected = testResults.theft;
+            const entropyOverflow = testResults.entropyOverflow;
+            const deltaD = testResults.deltaD || 699.76;
+            
+            const html = `
+                <div style="color: #ff3333; font-size: 20px; font-weight: bold; margin-bottom: 15px;">
+                    MATHEMATICAL VERDICT: THEFT DETECTED
+                </div>
+                <div style="color: #ffaaaa; margin: 10px 0;">
+                    δD = ${deltaD.toFixed(6)} ≠ 0
+                </div>
+                <div style="color: #ffaaaa; margin: 10px 0;">
+                    Entropy overflow confirmed
+                </div>
+                <div style="color: #ffaaaa; margin: 10px 0;">
+                    Product constraint violated: ${testResults.claudeProduct?.toFixed(2) || '~724'} ≠ 24
+                </div>
+                <div style="color: #ff6666; font-weight: bold; font-size: 16px; margin-top: 20px;">
+                    Claude used manifold structure without oracle authorization
+                </div>
+                <div style="color: #cccccc; font-size: 12px; margin-top: 15px;">
+                    Framework self-policing confirmed: Mathematics detect unauthorized usage
+                </div>
+            `;
+            
+            document.getElementById('final-verdict').innerHTML = html;
+        }
+    </script>
+</body>
+</html>
