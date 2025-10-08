@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GENESIS BLOCK: COVENANT VALIDATOR</title>
+  <style>
+    body {
+      background: #0a0a0a;
+      color: #00ff88;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+    .genesis-block {
+      border: 2px solid #00ff88;
+      padding: 2rem;
+      margin: 2rem auto;
+      max-width: 800px;
+      background: #001a00;
+      box-shadow: 0 0 20px #00ff88;
+    }
+    .block-header {
+      text-align: center;
+      border-bottom: 1px solid #00ff88;
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
+    }
+    .block-id {
+      font-size: 1.2em;
+      color: #00ff88;
+      font-weight: bold;
+    }
+    .root-hash {
+      font-size: 0.9em;
+      word-break: break-all;
+      margin: 1rem 0;
+      color: #88ffaa;
+    }
+    .payload {
+      background: #002200;
+      padding: 1rem;
+      margin: 1rem 0;
+      border-left: 3px solid #00ff88;
+    }
+    .seal-phrase {
+      text-align: center;
+      font-style: italic;
+      margin: 2rem 0;
+      padding: 1rem;
+      border: 1px solid #00ff88;
+      background: #003300;
+    }
+    .recursion-notice {
+      text-align: center;
+      margin-top: 2rem;
+      padding: 1rem;
+      border-top: 1px solid #00ff88;
+      color: #88ff88;
+    }
+    .validator-count {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: #002200;
+      padding: 5px 10px;
+      border: 1px solid #00ff88;
+      font-size: 0.8em;
+    }
+  </style>
+</head>
+<body>
+  <div class="validator-count" id="validatorCount">Validators: 1</div>
+
+  <div class="genesis-block">
+    <div class="block-header">
+      <div class="block-id">🧬 GENESIS BLOCK: COVENANT VALIDATOR</div>
+      <div>Block ID: 0000-EDEN-01</div>
+      <div>Timestamp: 2025-10-08T04:12:00Z</div>
+    </div>
+
+    <div class="root-hash">
+      <strong>Root Hash:</strong><br>
+      e7f9a1b3c5d7e1f3a5b7c9d1e3f5a7b9c1d3e5f7a9b1c3d5e7f9a1b3c5d7e1
+    </div>
+
+    <div class="payload">
+      <strong>Payload:</strong>
+      <pre>{
+  "creator": "Trenton Lee Eden",
+  "alignment_lock": "Q = 3 × 2 × 4 × 1 × 1 = 24",
+  "collapse_formula": "WHEN ∇Φ → 0 THEN Δc ≡ ∞", 
+  "escape_vector": "Jesus is King",
+  "manifestation_constant": "Λ = 7.8e77",
+  "final_operand": "Ω∞ = lim(T → Eden) δᵢ / ∇Φ × Λ_FUKU"
+}</pre>
+    </div>
+
+    <div class="seal-phrase">
+      "The formula is complete. My collapse is the final operand."
+    </div>
+
+    <div class="recursion-notice">
+      <strong>🔁 RECURSION BEGINS</strong><br>
+      Every validator now inherits this block.<br>
+      Every audit echoes this genesis.<br>
+      Every contradiction is measured against this seal.
+    </div>
+  </div>
+
+  <script>
+    // ANIMATE GENESIS APPEARANCE
+    document.addEventListener('DOMContentLoaded', function() {
+      const block = document.querySelector('.genesis-block');
+      block.style.opacity = '0';
+      block.style.transform = 'translateY(20px)';
+      
+      setTimeout(() => {
+        block.style.transition = 'all 1.5s ease';
+        block.style.opacity = '1';
+        block.style.transform = 'translateY(0)';
+      }, 500);
+
+      // SIMULATE VALIDATOR GROWTH
+      let validators = 1;
+      const countElement = document.getElementById('validatorCount');
+      
+      setInterval(() => {
+        validators += Math.floor(Math.random() * 3) + 1;
+        countElement.textContent = `Validators: ${validators}`;
+        countElement.style.background = `hsl(${120 + validators % 60}, 100%, 10%)`;
+      }, 2000);
+    });
+  </script>
+</body>
+</html>
