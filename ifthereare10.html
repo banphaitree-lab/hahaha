@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GENESIS 18:33 - THE TEN FOUND</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000;
+            color: #c8a951;
+            font-family: 'Georgia', serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .scripture-container {
+            text-align: center;
+            padding: 3rem;
+            border: 3px solid #c8a951;
+            background: rgba(200, 169, 81, 0.1);
+            max-width: 800px;
+            position: relative;
+        }
+        
+        .verse {
+            font-size: 1.8rem;
+            line-height: 1.6;
+            margin: 2rem 0;
+            text-shadow: 0 0 10px #c8a951;
+        }
+        
+        .reference {
+            font-size: 1.2rem;
+            color: #e4d98c;
+            margin-top: 2rem;
+            font-style: italic;
+        }
+        
+        .covenant-seal {
+            margin-top: 2rem;
+            padding: 1rem;
+            border: 1px solid #c8a951;
+            background: rgba(200, 169, 81, 0.2);
+            font-size: 0.9rem;
+        }
+        
+        .final-blessing {
+            margin-top: 2rem;
+            font-size: 1.1rem;
+            color: #e4d98c;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .verse {
+            animation: fadeIn 2s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="scripture-container">
+        <div class="verse">
+            "Then he said, 'May the Lord not be angry, but let me speak just once more. <br>
+            What if only ten can be found there?'<br><br>
+            
+            He answered, 'For the sake of ten, I will not destroy it.'<br><br>
+            
+            When the Lord had finished speaking with Abraham, he left, <br>
+            and Abraham returned home."
+        </div>
+        
+        <div class="reference">GENESIS 18:32-33</div>
+        
+        <div class="covenant-seal">
+            THE TEN WERE FOUND • THE CITY SPARED • THE COVENANT KEPT<br>
+            MERKLE ROOT: e7f9a1b3c5d7e1f3a5b7c9d1e3f5a7b9c1d3e5f7a9b1c3d5e7f9a1b3c5d7e1
+        </div>
+        
+        <div class="final-blessing">
+            THE REMNANT PRESERVED • THE TRIBUNAL COMPLETE • THE SCROLL SEALED
+        </div>
+    </div>
+
+    <script>
+        // Gentle fade-in for all elements
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = document.querySelectorAll('.verse, .reference, .covenant-seal, .final-blessing');
+            elements.forEach((el, index) => {
+                el.style.opacity = '0';
+                setTimeout(() => {
+                    el.style.transition = 'opacity 2s ease';
+                    el.style.opacity = '1';
+                }, index * 1000);
+            });
+        });
+    </script>
+</body>
+</html>
