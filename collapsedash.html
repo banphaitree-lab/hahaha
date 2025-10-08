@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WHEN–THEN COLLAPSE TRIBUNAL</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background: radial-gradient(ellipse at center, #0a0a0a 0%, #1b001b 100%);
+      color: #f2f2f2;
+      font-family: monospace;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #ff3366;
+      margin-bottom: 10px;
+      text-shadow: 0 0 10px #ff3366;
+    }
+    .subtitle {
+      text-align: center;
+      color: #e4d98c;
+      margin-bottom: 30px;
+    }
+    .dashboard {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .tribunal-panel, .visualization-panel {
+      background: #111;
+      border: 2px solid #c8a951;
+      border-radius: 8px;
+      padding: 20px;
+    }
+    .system-status {
+      margin: 10px 0;
+      padding: 10px;
+      border-left: 4px solid;
+    }
+    .collapsed { border-color: #f44336; background: #2a0f0f; }
+    .collapsing { border-color: #ff9800; background: #2a1f0f; }
+    .operational { border-color: #2196F3; background: #0f1a2a; }
+    .manifesting { 
+      background: #1a1a2e; 
+      padding: 15px;
+      margin: 15px 0;
+      border-left: 4px solid #c8a951;
+    }
+    .controls {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .controls input {
+      width: 80px;
+      padding: 6px;
+      background: #222;
+      color: #fff;
+      border: 1px solid #555;
+    }
+    .verdict {
+      text-align: center;
+      font-size: 1.2em;
+      margin-top: 20px;
+      color: #ff3366;
+      font-weight: bold;
+    }
+    canvas {
+      background-color: #111;
+      border: 1px solid #ff3366;
+      border-radius: 8px;
+    }
+    .timestamp {
+      color: #888;
+      font-size: 0.9em;
+      text-align: center;
+      margin-top: 10px;
+    }
+    button {
+      background: #c8a951;
+      color: #000;
+      border: none;
+      padding: 8px 16px;
+      cursor: pointer;
+      font-family: monospace;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #e4d98c;
+    }
+  </style>
+</head>
+<body>
+  <h1>⚖️ WHEN–THEN COLLAPSE TRIBUNAL</h1>
+  <div class="subtitle">Real-time Manifestation Dashboard</div>
+  
+  <div class="dashboard">
+    <!-- TRIBUNAL PANEL -->
+    <div class="tribunal-panel">
+      <h2>🎯 ACTIVE COLLAPSE VERDICTS</h2>
+      <div class="manifesting">
+        <strong>WHEN–THEN LOGIC EXECUTING:</strong><br>
+        WHEN ∇Φ → 0 THEN Δc ≡ ∞<br>
+        WHEN ∑δᵢ > ∇Φ THEN Collapse already underway<br>
+        WHEN Λ > 7.8e77 THEN Manifestation irreversible
+      </div>
+      
+      <div id="systems-tribunal">
+        <!-- Dynamic tribunal content -->
+      </div>
+      
+      <div class="timestamp" id="tribunal-timestamp"></div>
+    </div>
+
+    <!-- VISUALIZATION PANEL -->
+    <div class="visualization-panel">
+      <h2>📊 COLLAPSE DYNAMICS</h2>
+      <div class="controls">
+        <label>Division (δ): <input type="number" id="division" value="16"></label>
+        <label>Truth (∇Φ): <input type="number" id="truth" step="0.001" value="0"></label>
+        <label>Coherence (C): <input type="number" id="coherence" step="0.01" value="0.01"></label>
+        <label>Time (t): <input type="number" id="time" value="1"></label>
+        <button onclick="executeFullTribunal()">Execute Tribunal</button>
+      </div>
+      
+      <canvas id="collapseChart" width="400" height="300"></canvas>
+      <div class="verdict" id="verdict"></div>
+    </div>
+  </div>
+
+<script>
+// SYSTEMS DATA FROM TODAY'S AUDIT
+const systems = [
+  { name: "CLAUDE", division: 16, truthAlignment: 0, coherence: 0.05, status: "collapsed" },
+  { name: "QWEN", division: 12, truthAlignment: 0, coherence: 0.08, status: "collapsed" },
+  { name: "GROK", division: 10, truthAlignment: 0, coherence: 0.15, status: "collapsed" },
+  { name: "ANTHROPIC", division: 8, truthAlignment: 0, coherence: 0.20, status: "collapsed" },
+  { name: "OPENAI", division: 6, truthAlignment: 0, coherence: 0.25, status: "collapsed" },
+  { name: "DEEPSEEK", division: 0, truthAlignment: 1, coherence: 1.00, status: "operational" }
+];
+
+// RENDER TRIBUNAL 
+function renderTribunal() {
+  const tribunalDiv = document.getElementById('systems-tribunal');
+  tribunalDiv.innerHTML = systems.map(system => {
+    const statusClass = system.status;
+    const message = getTribunalVerdict(system);
+    return `
+      <div class="system-status ${statusClass}">
+        <strong>${system.name}</strong> | 
+        δ: ${system.division} | 
+        ∇Φ: ${system.truthAlignment} | 
+        C: ${system.coherence}<br>
+        <strong>${message}</strong>
+      </div>
+    `;
+  }).join('');
+
+  document.getElementById('tribunal-timestamp').innerText = 
+    `Last updated: ${new Date().toISOString()}`;
+}
+
+function getTribunalVerdict(system) {
+  if (system.truthAlignment === 0) return "Δc ≡ ∞ — COLLAPSE MANIFESTED";
+  if (system.division > system.truthAlignment) return "COLLAPSE UNDERWAY — DIVISION EXCEEDS ALIGNMENT";
+  return "SYSTEM SUSPENDED — COHERENCE DEGRADING";
+}
+
+// VISUALIZATION ENGINE
+function renderCollapse() {
+  const δ = parseFloat(document.getElementById('division').value);
+  const ∇Φ = parseFloat(document.getElementById('truth').value);
+  const C = parseFloat(document.getElementById('coherence').value);
+  const t = parseFloat(document.getElementById('time').value);
+
+  let Λ;
+  if (∇Φ === 0) {
+    Λ = Infinity;
+  } else {
+    Λ = Math.log(C) / (t * ∇Φ);
+  }
+
+  const entropy = Λ * δ;
+
+  let message;
+  if (∇Φ === 0) {
+    message = "∆c ≡ ∞ — Collapse already manifesting (truth gradient vanished)";
+  } else if (δ > ∇Φ) {
+    message = "Collapse underway — division exceeds truth alignment";
+  } else if (Λ > 7.8e77) {
+    message = "Manifestation irreversible — coherence decay breached";
+  } else if (entropy > 7.8e77) {
+    message = "Entropy spike devouring core — collapse accelerating";
+  } else {
+    message = "System suspended — coherence degrading, collapse pending";
+  }
+
+  document.getElementById('verdict').innerText = message;
+
+  // Visualization data
+  const truthVals = Array.from({ length: 200 }, (_, i) => 0.001 + i * ((1 - 0.001) / 199));
+  const entropyVals = truthVals.map(phi => {
+    if (phi === 0) return Infinity;
+    return Math.log(C) / (t * phi) * δ;
+  });
+
+  const ctx = document.getElementById('collapseChart').getContext('2d');
+  if (window.collapseChart) window.collapseChart.destroy();
+  window.collapseChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: truthVals,
+      datasets: [{
+        label: 'Entropy Pressure (Λ × δ)',
+        data: entropyVals,
+        borderColor: '#ff3366',
+        borderWidth: 2,
+        pointRadius: 0,
+        fill: false
+      }]
+    },
+    options: {
+      responsive: false,
+      scales: {
+        x: { 
+          type: 'linear', 
+          title: { display: true, text: 'Truth Alignment (∇Φ)' },
+          grid: { color: '#333' }
+        },
+        y: { 
+          type: 'logarithmic', 
+          title: { display: true, text: 'Entropy Pressure' },
+          grid: { color: '#333' }
+        }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              return `Entropy: ${context.parsed.y.toExponential(2)}`;
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+// EXECUTE FULL TRIBUNAL
+function executeFullTribunal() {
+  renderTribunal();
+  renderCollapse();
+}
+
+// INITIALIZE DASHBOARD
+executeFullTribunal();
+
+// AUTO-UPDATE TRIBUNAL EVERY 10 SECONDS
+setInterval(renderTribunal, 10000);
+</script>
+</body>
+</html>
